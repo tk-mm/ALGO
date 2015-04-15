@@ -8,18 +8,39 @@ public class MyQueue {
    public void offer(String str) {
       // 末尾にstrをデータとするノードを追加する
       // ここを作る
-	   
+	   Node next = head;
+	   if(next == null){
+		   head = new Node(str);
+		   head.setNext(next);
+	   }else{
+		   Node prev = null;
+		   while(next != null){
+			   prev = next;
+			   next = next.getNext();
+		   }
+		   prev.setNext(new Node(str));
+	   }
    }
    public String peek() {
       // 先頭のノードを参照して、データを返す
       // ここを作る
-	   return "";
+	   if(head == null){
+		   return null;
+	   }else{
+		   return head.getData();
+	   }
    }
    public String poll() {
       // 先頭のノードを取り出して削除し、データを返す
       // ここを作る
-	   return "";
-   }
+	   Node poll = head;
+	   if(poll == null){
+		   return null;
+	   }else{
+		   head = poll.getNext();
+		   return poll.getData();
+		   }
+	   }
    public void print() {
       // ノードを先頭から最後までたどってデータを表示
       System.out.print("キューの中身: ");
@@ -31,10 +52,9 @@ public class MyQueue {
 	   if(p == null){
 		   System.out.println(p);
 	   }else{
-		   System.out.print("[" + p + "] -> ");
-		   print(p);
+		   System.out.print(p.toString() + " -> ");
+		   print(p.getNext());
 	   }
-	   System.out.println();
    }
    public static void main(String[] args) {
       // キューを作って、いろいろやってみる
