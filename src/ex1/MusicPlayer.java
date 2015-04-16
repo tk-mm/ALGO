@@ -51,6 +51,7 @@ public class MusicPlayer {
 		musicPlayer.add(album);
 		musicPlayer.add(album2);
 		
+		musicPlayer.play();
 		musicPlayer.shufflePlay();
 		
 		
