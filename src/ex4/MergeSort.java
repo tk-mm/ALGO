@@ -8,11 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class QuickSort {
+public class MergeSort {
+
 	private final int n = 50000;
 	private int[] a = new int[n];
 
-	public QuickSort(String filename) {
+	public MergeSort(String filename) {
 		try {
 			@SuppressWarnings("resource")
 			BufferedReader bf = new BufferedReader(new FileReader(filename));
@@ -31,37 +32,40 @@ public class QuickSort {
 		}
 	}
 
-	private int partition(int l, int r) {
-		return a[(l + r) / 2];
-	}
-
-	private void quicksort(int l, int r) {
-		if(l <= r){
-			int v = partition(l, r);
-			int left = l;
-			int right = r;
-			while (l <= r) {
-				while (a[l] < v) {
-					l++;
-				}
-				while (a[r] > v) {
-					r--;
-				}
-				if (l <= r) {
-					int tmp = a[l];
-					a[l] = a[r];
-					a[r] = tmp;
-					l++;
-					r--;
-				}
+	private void mergesort(int low, int high) {
+		// ここを作る
+		// マージソートを実装する
+		// 配列aの中身をソートする
+		if(low < high){
+			int middle = (low + high) / 2;
+			mergesort(low, middle);
+			mergesort(middle + 1, high);
+			int[] tmp = new int[a.length];
+			for(int i = low; i <= high; i++){
+				tmp[i] = a[i];
 			}
-			quicksort(left, r);
-			quicksort(l, right);
+			int left = low;
+			int right = middle + 1;
+			int current = low;
+			while(left <= middle && right <= high){
+				if(tmp[left] <= tmp[right]){
+					a[current] = tmp[left];
+					left++;
+				}else{
+					a[current] = tmp[right];
+					right++;
+				}
+				current++;
+			}
+			int re = middle - left;
+			for(int i = 0; i <= re; i++){
+				a[current + i] = tmp[left + i];
+			}
 		}
 	}
 
 	public void sort() {
-		quicksort(0, a.length - 1);
+		mergesort(0, a.length - 1);
 	}
 
 	public void output(String filename) {
@@ -80,16 +84,15 @@ public class QuickSort {
 	}
 
 	public static void main(String[] args) {
-		String file1 = "sorted2.txt";
-		String file2 = "result_ex4-1_sorted2.txt";
+		String file1 = "rand2.txt";
+		String file2 = "result_ex4-2_rand2.txt";
 
-		
-		QuickSort qs = new QuickSort(file1);
+		MergeSort ms = new MergeSort(file1);
 		long start, stop;
 		start = System.currentTimeMillis();
-		qs.sort();
+		ms.sort();
 		stop = System.currentTimeMillis();
 		System.out.println((stop - start) + "[ms]");
-		qs.output(file2);
+		ms.output(file2);
 	}
 }
